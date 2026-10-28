@@ -31,8 +31,8 @@ Le script de nettoyage (`01_cleaning_pipeline.sql`) réalise les opérations sui
 ```text
 ├── data/                      # Fichiers sources bruts (Kaggle)
 ├── sql/
-│   ├── 01_cleaning.sql        # Script complet de nettoyage et modélisation
-│   └── 02_analysis.sql        # Requêtes d'analyse métier (à venir)
+│   ├── 01_cleaning.sql        # Nettoyage et modélisation
+│   └── 02_analysis.sql        # Requêtes d'analyse métier 
 ├── docs/
-│   └── er_diagram.png         # Schéma en étoile de la base de données
+│   └── Diagramme.png         # Diagramme UML
 └── README.md
