@@ -106,8 +106,6 @@ ORDER BY nb_medailles DESC;
 --   - Regrouper les médailles par athlète et par discipline.
 --   - Identifier la première et la dernière année de médaille.
 --   - Calculer l'écart entre ces deux années.
---   - Retenir les athlètes ayant été médaillés lors d'au moins
---     quatre éditions distinctes.
 --   - Classer les résultats selon la durée de carrière, puis selon
 --     le nombre d'éditions olympiques médaillées.
 --
@@ -145,8 +143,6 @@ GROUP BY
     a.athlete_url,
     a.athlete_name,
     m.discipline
-
-HAVING COUNT(DISTINCT m.game_slug) >= 4 -- Exiger au moins 4 éditions distinctes avec 1 médaille
 
 ORDER BY
     duree_carriere_ans DESC,
