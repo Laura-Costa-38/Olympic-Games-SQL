@@ -2,11 +2,11 @@
 -- Nettoyage des données
 -- =====================================================================
 
-DROP VIEW IF EXISTS medal_events;
-DROP TABLE IF EXISTS olympic_athletes_cleaned;
-DROP TABLE IF EXISTS olympic_medals_cleaned;
-DROP TABLE IF EXISTS olympic_hosts_cleaned;
-DROP TABLE IF EXISTS olympic_results_cleaned;
+DROP VIEW IF EXISTS medal_events CASCADE;
+DROP TABLE IF EXISTS olympic_athletes_cleaned CASCADE;
+DROP TABLE IF EXISTS olympic_medals_cleaned CASCADE;
+DROP TABLE IF EXISTS olympic_hosts_cleaned CASCADE;
+DROP TABLE IF EXISTS olympic_results_cleaned CASCADE;
 
 -- ---------- 1. Apperçu de chaque table -------
 -- Table olympic_hosts : clé primaire game_slug
@@ -21,7 +21,7 @@ UNION ALL
 -- Table olympic_medals
 SELECT 'olympic_medals',
        COUNT(*),
-       COUNT(*) - (SELECT COUNT(*) FROM (SELECT DISTINCT * FROM olympic_medals)),
+       COUNT(*) - (SELECT COUNT(*) FROM (SELECT DISTINCT * FROM olympic_medals) t),
        COUNT(*) - COUNT(NULLIF(TRIM(country_3_letter_code::text), ''))
 FROM olympic_medals
 
@@ -120,7 +120,7 @@ FROM olympic_medals_cleaned;
 
 -- ---------- 4. Nettoyage de olympic_athletes ----------------------
 -- athlete_url : text (identifiant unique) / athlete_name : text
--- birth_year : integer (filtré entre 1850 et 2012) / games_participations : integer
+-- birth_year : integer (filtré entre 1800 et 2012) / games_participations : integer
 -- first_game : text / athlete_medals : text
 -- Nettoyage des données aberrantes et dédoublonnage par URL (on garde la ligne avec le plus de participations)
 -- athete_url est la clé primaire
@@ -131,7 +131,7 @@ WITH cleaned AS (
         TRIM(athlete_full_name::text)                          AS athlete_name,
         CASE 
             WHEN TRIM(athlete_year_birth::text) ~ '^[0-9]{4}$' 
-             AND TRIM(athlete_year_birth::text)::integer BETWEEN 1850 AND 2012
+             AND TRIM(athlete_year_birth::text)::integer BETWEEN 1800 AND 2012
             THEN TRIM(athlete_year_birth::text)::integer 
         END                                                    AS birth_year,
         CASE 
